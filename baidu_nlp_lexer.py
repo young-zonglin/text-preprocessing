@@ -1,6 +1,7 @@
 import parameters
 from aip import AipNlp
 
+
 def get_client():
     """
     获取百度nlp client
@@ -30,7 +31,6 @@ def segment_baidu(client, text):
         item = items[i]
         seg_list.append(item.get('item'))
     return seg_list
-
 
 text = "同意在新起点上退动中美关析取得更大法展"
 client = get_client()
