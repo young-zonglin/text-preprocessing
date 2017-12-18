@@ -1,14 +1,11 @@
 import os
+import tools
+import xml_operation_sax
 import shutil
 import chardet
 
 BLOCK_SIZE = 1048576  # or some other, desired size in bytes
 
-
-# # 判断文件的编码格式
-# with open("E:\自然语言处理数据集\搜狐新闻数据(SogouCS)\\news.sohunews.010802.txt", "rb") as f:
-#     data = f.read(BLOCK_SIZE)
-#     print(chardet.detect(data))
 
 def ls_each_file(parent_path):
     """
@@ -22,26 +19,6 @@ def ls_each_file(parent_path):
     return child_filename_list
 
 
-def same_operation_this_module(src_parent_path, target_parent_path,
-                               src_filename_list, target_filename_list,
-                               filename_suffix=""):
-    if src_parent_path == target_parent_path:
-        print('source path can not be equal to target.')
-        return
-    for filename in os.listdir(src_parent_path):
-        src_filename = os.path.join(src_parent_path, filename)
-        if os.path.isdir(src_filename):
-            print(src_filename, 'is a directory.')
-            print("Sorry, we have no ability to handle dir.")
-            print(src_filename, 'has been passed.')
-            continue
-        target_filename = os.path.join(target_parent_path, filename + filename_suffix)
-        if not os.path.exists(target_parent_path):
-            os.makedirs(target_parent_path)
-        src_filename_list.append(src_filename)
-        target_filename_list.append(target_filename)
-
-
 def convert_files_encoding(src_parent_path, target_parent_path, src_encoding, target_encoding="utf-8"):
     """
     convert encoding of files under src_parent_path to target_encoding.
@@ -53,9 +30,9 @@ def convert_files_encoding(src_parent_path, target_parent_path, src_encoding, ta
     """
     src_filename_list = []
     target_filename_list = []
-    same_operation_this_module(src_parent_path, target_parent_path,
-                               src_filename_list, target_filename_list,
-                               filename_suffix=".utf-8")
+    tools.get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
+                                                        src_filename_list, target_filename_list,
+                                                        filename_suffix=".utf-8")
     length = len(src_filename_list)
     for i in range(length):
         src_filename = src_filename_list[i]
@@ -79,9 +56,9 @@ def convert_files_encoding(src_parent_path, target_parent_path, src_encoding, ta
             continue
 
 
-def add_root_element_each_file(src_parent_path, target_parent_path):
+def convert_markup_files_to_xml(src_parent_path, target_parent_path):
     """
-    add root element for each file under src_parent_path, result file
+    add xml element and root element and remove '&' for each file under src_parent_path, result file
     will be saved under target_parent_path.
     notes: we cannot have any dir under src_parent_path.
     :param src_parent_path:
@@ -91,31 +68,47 @@ def add_root_element_each_file(src_parent_path, target_parent_path):
     # shutil.copy(raw_filename, result_filename)
     src_filename_list = []
     target_filename_list = []
-    same_operation_this_module(src_parent_path, target_parent_path,
-                               src_filename_list, target_filename_list,
-                               filename_suffix=".added")
+    tools.get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
+                                                        src_filename_list, target_filename_list,
+                                                        filename_suffix=".xml")
     length = len(src_filename_list)
     for i in range(length):
         src_filename = src_filename_list[i]
         target_filename = target_filename_list[i]
         with open(src_filename, 'r', encoding="utf-8") as src_file, \
                 open(target_filename, 'w', encoding="utf-8") as target_file:
+            target_file.write('<?xml version="1.0" encoding="UTF-8"?>')
             target_file.write('<docroot>')
             for line in src_file:
-                target_file.write(line)
+                target_file.write(line.replace('&', ''))
             target_file.write("</docroot>")
         print(src_filename, "has been processed.")
         print('result has been saved in', target_filename)
         print('=============================================')
 
-# path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)"
-# filename_list = ls_each_file(path)
-# print(len(filename_list))
 
-src_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)"
-target_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_utf-8格式"
-convert_files_encoding(src_path, target_path, src_encoding="gb18030")
+# if __name__ == '__main__':
+#     # judge encoding of file
+#     with open("E:\自然语言处理数据集\搜狐新闻数据(SogouCS)\\news.sohunews.010802.txt", "rb") as f:
+#         data = f.read(BLOCK_SIZE)
+#         print(chardet.detect(data))
+#
+# if __name__ == '__main__':
+#     path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)"
+#     filename_list = ls_each_file(path)
+#     print(len(filename_list))
+#
+# if __name__ == '__main__':
+#     src_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)"
+#     target_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_utf-8格式"
+#     convert_files_encoding(src_path, target_path, src_encoding="gb18030")
+#
+# if __name__ == '__main__':
+#     raw_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_utf-8格式"
+#     result_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_xml"
+#     convert_markup_files_to_xml(raw_path, result_path)
 
-raw_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_utf-8格式"
-result_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_添加root标签"
-add_root_element_each_file(raw_path, result_path)
+# if __name__ == '__main__':
+#     src_xml_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_xml"
+#     target_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_train"
+#     xml_operation_sax.extract_content_from_xml(src_xml_path, target_path)

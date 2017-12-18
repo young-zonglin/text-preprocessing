@@ -32,8 +32,10 @@ def segment_baidu(client, text):
         seg_list.append(item.get('item'))
     return seg_list
 
-text = "同意在新起点上退动中美关析取得更大法展"
-client = get_client()
-seg_result = segment_baidu(client, text)
-for word in seg_result:
-    print(word, end=" ")
+
+if __name__ == "__main__":
+    text = "同意在新起点上退动中美关析取得更大法展"
+    client = get_client()
+    seg_result = segment_baidu(client, text)
+    for word in seg_result:
+        print(word, end=" ")
