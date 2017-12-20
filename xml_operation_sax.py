@@ -2,6 +2,7 @@ import xml
 from xml.sax import parse
 from xml.sax.handler import ContentHandler
 import tools
+import parameters
 
 
 class DocHandler(ContentHandler):
@@ -48,11 +49,14 @@ def extract_content_from_xml(src_xml_parent_path, target_parent_path):
             print('result has been saved in', target_filename)
             print('------------------------------------------')
         except xml.parsers.expat.ExpatError as error:
-            print("################## Error occur ######################")
-            print(error)
-            print("maybe there are some illegal char occur in xml")
-            print("give up to extract content from", src_xml_url)
-            print("################## Error occur ######################")
+            error_output = "################## Error occur ######################\n"
+            error_output += error.__str__() + '\n'
+            error_output += "maybe there are some illegal char occur in xml.\n"
+            error_output += "give up to extract content from " + src_xml_url + '\n'
+            error_output += "################## Error occur ######################\n"
+            print(error_output)
+            with open(parameters.EXCEPTION_FILE, 'a', encoding='utf=8') as exception_file:
+                exception_file.write(error_output)
             continue
 
 if __name__ == '__main__':

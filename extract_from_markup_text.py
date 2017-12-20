@@ -1,6 +1,7 @@
 import os
 import tools
 import xml_operation_sax
+import parameters
 import shutil
 import chardet
 
@@ -47,12 +48,15 @@ def convert_files_encoding(src_parent_path, target_parent_path, src_encoding, ta
             print('------------------------------------------')
         except UnicodeDecodeError as error:
             os.remove(target_filename)
-            print("################## Error occur ######################")
-            print(error)
-            print("maybe there are some illegal char we cannot decode.")
-            print("give up to convert encoding of", src_filename)
-            print(target_filename, "has been deleted because of incomplete.")
-            print("################## Error occur ######################")
+            error_output = "################## Error occur ######################\n"
+            error_output += error.__str__() + '\n'
+            error_output += "maybe there are some illegal char we cannot decode.\n"
+            error_output += "give up to convert encoding of " + src_filename + '\n'
+            error_output += target_filename + " has been deleted because of incomplete."
+            error_output += "################## Error occur ######################\n"
+            print(error_output)
+            with open(parameters.EXCEPTION_FILE, 'a', encoding='utf=8') as exception_file:
+                exception_file.write(error_output)
             continue
 
 
@@ -87,6 +91,20 @@ def convert_markup_files_to_xml(src_parent_path, target_parent_path):
         print('=============================================')
 
 
+def extract_content_from_markup_text(src_parent_path):
+    """
+    extract content of element of 'content'.
+    :param src_parent_path: some markup texts under here
+    :return: None
+    """
+    utf8_files_parent_path = src_parent_path + "_utf-8格式"
+    convert_files_encoding(src_parent_path, utf8_files_parent_path, src_encoding="gb18030")
+    xml_files_parent_path = src_parent_path + "_xml"
+    convert_markup_files_to_xml(utf8_files_parent_path, xml_files_parent_path)
+    train_texts_parent_path = src_parent_path + "_train"
+    xml_operation_sax.extract_content_from_xml(xml_files_parent_path, train_texts_parent_path)
+
+
 # if __name__ == '__main__':
 #     # judge encoding of file
 #     with open("E:\自然语言处理数据集\搜狐新闻数据(SogouCS)\\news.sohunews.010802.txt", "rb") as f:
@@ -97,18 +115,3 @@ def convert_markup_files_to_xml(src_parent_path, target_parent_path):
 #     path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)"
 #     filename_list = ls_each_file(path)
 #     print(len(filename_list))
-#
-# if __name__ == '__main__':
-#     src_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)"
-#     target_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_utf-8格式"
-#     convert_files_encoding(src_path, target_path, src_encoding="gb18030")
-#
-# if __name__ == '__main__':
-#     raw_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_utf-8格式"
-#     result_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_xml"
-#     convert_markup_files_to_xml(raw_path, result_path)
-
-# if __name__ == '__main__':
-#     src_xml_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_xml"
-#     target_path = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_train"
-#     xml_operation_sax.extract_content_from_xml(src_xml_path, target_path)

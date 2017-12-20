@@ -1,4 +1,5 @@
 import os
+import parameters
 
 
 def get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
@@ -20,9 +21,14 @@ def get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent
     for filename in os.listdir(src_parent_path):
         src_filename = os.path.join(src_parent_path, filename)
         if os.path.isdir(src_filename):
-            print(src_filename, 'is a directory.')
-            print("Sorry, we have no ability to handle dir.")
-            print(src_filename, 'has been passed.')
+            cannot_handle_output = "############ cannot handle ################\n"
+            cannot_handle_output += src_filename + ' is a directory.\n'
+            cannot_handle_output += "Sorry, we have no ability to handle dir.\n"
+            cannot_handle_output += src_filename + ' has been passed.\n'
+            cannot_handle_output += "############ cannot handle ################\n"
+            print(cannot_handle_output)
+            with open(parameters.CANNOT_HANDLE_OUTPUT_FILE, 'a', encoding='utf-8') as cannot_handle_output_file:
+                cannot_handle_output_file.write(cannot_handle_output)
             continue
         target_filename = os.path.join(target_parent_path, filename + filename_suffix)
         if not os.path.exists(target_parent_path):

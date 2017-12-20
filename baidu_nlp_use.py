@@ -1,4 +1,4 @@
-import parameters
+import baidu_nlp_parameters
 from aip import AipNlp
 
 
@@ -7,7 +7,7 @@ def get_client():
     获取百度nlp client
     :return: 百度nlp client
     """
-    client = AipNlp(parameters.APP_ID, parameters.API_KEY, parameters.SECRET_KEY)
+    client = AipNlp(baidu_nlp_parameters.APP_ID, baidu_nlp_parameters.API_KEY, baidu_nlp_parameters.SECRET_KEY)
     client.setConnectionTimeoutInMillis(20000)
     client.setSocketTimeoutInMillis(60000)
     return client
