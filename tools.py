@@ -2,6 +2,39 @@ import os
 import parameters
 
 
+class ProcessPath:
+    def do_before_loop(self, src_file, target_file):
+        pass
+
+    def do_in_loop(self, line, src_file, target_file):
+        pass
+
+    def do_after_loop(self, src_file, target_file):
+        pass
+
+    def do_after_process_file(self, src_filename, target_filename):
+        pass
+
+    # template method pattern
+    def process_srcpath_to_targetpath(self, src_parent_path, target_parent_path, filename_suffix=""):
+        src_filename_list = []
+        target_filename_list = []
+        get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
+                                                      src_filename_list, target_filename_list,
+                                                      filename_suffix)
+        length = len(src_filename_list)
+        for i in range(length):
+            src_filename = src_filename_list[i]
+            target_filename = target_filename_list[i]
+            with open(src_filename, 'r', encoding="utf-8") as src_file, \
+                    open(target_filename, 'w', encoding="utf-8") as target_file:
+                self.do_before_loop(src_file, target_file)
+                for line in src_file:
+                    self.do_in_loop(line, src_file, target_file)
+                self.do_after_loop(src_file, target_file)
+            self.do_after_process_file(src_filename, target_filename)
+
+
 def get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
                                                   src_filename_list, target_filename_list,
                                                   filename_suffix=""):
