@@ -28,10 +28,14 @@ class ProcessPath:
             target_filename = target_filename_list[i]
             with open(src_filename, 'r', encoding="utf-8") as src_file, \
                     open(target_filename, 'w', encoding="utf-8") as target_file:
+                # 用于在target_file开头写一些东西
                 self.do_before_loop(src_file, target_file)
                 for line in src_file:
+                    # 处理src_file的每一行，将结果存入target_file
                     self.do_in_loop(line, src_file, target_file)
+                # 用于在target_file末尾写一些东西
                 self.do_after_loop(src_file, target_file)
+            # 处理完一个文件后，控制台打印一些信息
             self.do_after_process_file(src_filename, target_filename)
 
 

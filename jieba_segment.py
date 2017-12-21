@@ -8,8 +8,9 @@ if __name__ == '__main__':
     print(seg_list)
 
 if __name__ == "__main__":
-    text = "我们中出了一位叛徒"
-    seg_generator = jieba.cut(text, HMM=False)
+    text = "今天天气很好"
+    jieba.suggest_freq(('今天', '天气'), tune=True)
+    seg_generator = jieba.cut(text, HMM=True)
     print(type(seg_generator))
     print(seg_generator)
     for word in seg_generator:
