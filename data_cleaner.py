@@ -5,12 +5,12 @@ from pyparsing import unichr
 
 
 def remove_comma_from_number(seq):
-    pattern = re.compile(r"\d[,，]+\d")
+    pattern = re.compile(r"\d([,，]+)\d")
     while True:
         matched_obj = pattern.search(seq)
         if matched_obj:
-            matched_str = matched_obj.group()
-            seq = seq.replace(matched_str, matched_str.replace(',', '').replace('，', ''))
+            matched_comma_str = matched_obj.group(1)
+            seq = seq.replace(matched_comma_str, '')
         else:
             break
     return seq
