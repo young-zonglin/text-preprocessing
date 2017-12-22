@@ -33,11 +33,6 @@ class SentenceSegment(tools.ProcessPath):
             if seq != '' and seq != '\n':
                 target_file.write(seq+'\n')
 
-    def do_after_process_file(self, src_filename, target_filename):
-        print(src_filename, "has been processed.")
-        print('result has been saved in', target_filename)
-        print('=============================================')
-
 
 # if __name__ == '__main__':
 #     str_test = '跳转至：页４／１０我来说两　句'

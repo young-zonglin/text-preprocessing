@@ -1,5 +1,6 @@
 import re
 import parameters
+import tools
 from pyparsing import unichr
 
 
@@ -16,7 +17,7 @@ def remove_comma_from_number(seq):
 
 
 def remove_blank_from_number_and_chinese(seq):
-    chinese_number_blank_chinese_pattern = re.compile(parameters.MATCH_BLANK_PATTERN)
+    chinese_number_blank_chinese_pattern = re.compile(parameters.MATCH_BLANK_PATTERN_STR)
     blank_pattern = re.compile('[\u3000\ue40c ]+')
     while True:
         matched_obj = chinese_number_blank_chinese_pattern.search(seq)
@@ -39,6 +40,14 @@ def convert_fullwidth_to_halfwidth(in_str):
             inside_code -= 65248
         ret_str += unichr(inside_code)
     return ret_str
+
+
+class DataCleaner(tools.ProcessPath):
+    chinese_pattern = re.compile(parameters.MATCH_CHINESE_PATTERN_STR)
+
+    def do_in_loop(self, line, src_file, target_file):
+        if self.chinese_pattern.search(line):
+            target_file.write(line)
 
 
 if __name__ == '__main__':

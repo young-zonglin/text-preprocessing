@@ -13,7 +13,9 @@ class ProcessPath:
         pass
 
     def do_after_process_file(self, src_filename, target_filename):
-        pass
+        print(src_filename, "has been processed.")
+        print('result has been saved in', target_filename)
+        print('=============================================')
 
     # template method pattern
     def process_srcpath_to_targetpath(self, src_parent_path, target_parent_path,

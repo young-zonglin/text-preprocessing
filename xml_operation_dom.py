@@ -3,8 +3,8 @@ import tools
 import re
 import parameters
 
-match_dirty_data_pattern1 = re.compile(parameters.MATCH_DIRTY_DATA_PATTERN1)
-match_dirty_data_pattern2 = re.compile(parameters.MATCH_DIRTY_DATA_PATTERN2)
+match_dirty_data_pattern1 = re.compile(parameters.MATCH_DIRTY_DATA_PATTERN1_STR)
+match_dirty_data_pattern2 = re.compile(parameters.MATCH_DIRTY_DATA_PATTERN2_STR)
 
 
 def extract_content_from_xml(src_xml_url, target_filename):
