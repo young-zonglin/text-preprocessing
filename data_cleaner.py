@@ -43,9 +43,11 @@ def convert_fullwidth_to_halfwidth(in_str):
 
 
 class DataCleaner(tools.ProcessPath):
+    # 类变量，类似于static
     chinese_pattern = re.compile(parameters.MATCH_CHINESE_PATTERN_STR)
 
     def do_in_loop(self, line, src_file, target_file):
+        # if DataCleaner.chinese_pattern.search(line):
         if self.chinese_pattern.search(line):
             target_file.write(line)
 
