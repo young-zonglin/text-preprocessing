@@ -1,0 +1,5 @@
+# This a plain text, record some of my thoughts.
+英文单词可以训练成词向量
+数字表示成同一个向量
+每种标点符号表示成一种向量
+每种标点符号需要one-hot编码

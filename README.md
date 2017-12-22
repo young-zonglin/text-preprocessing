@@ -1,6 +1,10 @@
 # text-preprocess
 Preprocess text, transfer them into format used by language model implemented by Keras with LSTM in Python.
 
+# get started
+The main entry is in text_preprocess_main.py.
+Maybe you should uncomment the code in the text_preprocess_main.py.
+
 # 步骤
 （1）转换编码
 （2）转换标记文本为xml
