@@ -8,3 +8,4 @@ Preprocess text, transfer them into format used by language model implemented by
 （4）将全角字符转为半角
 （5）去除数字内的逗号
 （6）按照停顿符和空格切句
+（7）继续清洗文本（不要“福彩”类的文本，去掉不应该出现的空格，去掉不包含中文的行）
