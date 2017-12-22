@@ -16,7 +16,8 @@ class ProcessPath:
         pass
 
     # template method pattern
-    def process_srcpath_to_targetpath(self, src_parent_path, target_parent_path, filename_suffix=""):
+    def process_srcpath_to_targetpath(self, src_parent_path, target_parent_path,
+                                      filename_suffix=""):
         src_filename_list = []
         target_filename_list = []
         get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,

@@ -32,7 +32,7 @@ class DocHandler(ContentHandler):
                 self.target_file.write(content)
 
 
-def extract_content_from_xml(src_xml_parent_path, target_parent_path):
+def extract_content_from_xmls(src_xml_parent_path, target_parent_path):
     src_xml_url_list = []
     target_filename_list = []
     tools.get_filenamelist_under_srcpath_and_targetpath(src_xml_parent_path, target_parent_path,

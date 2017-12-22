@@ -23,10 +23,13 @@ import data_cleaner
 # 句号。问号？叹号！逗号，分号；这些符号应该切分句子
 
 class SentenceSegment(tools.ProcessPath):
+    sentence_split_pattern = re.compile(parameters.SENTENCE_SPLIT_PATTERN)
+
     def do_in_loop(self, line, src_file, target_file):
         line = data_cleaner.remove_comma_from_number(line)
         line = data_cleaner.convert_fullwidth_to_halfwidth(line)
-        for seq in re.split(parameters.sentence_split_pattern, line):
+        line = data_cleaner.remove_blank_from_number_and_chinese(line)
+        for seq in self.sentence_split_pattern.split(line):
             if seq != '' and seq != '\n':
                 target_file.write(seq+'\n')
 

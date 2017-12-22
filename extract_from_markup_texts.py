@@ -4,6 +4,7 @@ import xml_operation_sax
 import parameters
 import shutil
 import chardet
+import xml_operation_dom
 
 BLOCK_SIZE = 1048576  # or some other, desired size in bytes
 
@@ -52,7 +53,7 @@ def convert_files_encoding(src_parent_path, target_parent_path, src_encoding, ta
             error_output += error.__str__() + '\n'
             error_output += "maybe there are some illegal char we cannot decode.\n"
             error_output += "give up to convert encoding of " + src_filename + '\n'
-            error_output += target_filename + " has been deleted because of incomplete."
+            error_output += target_filename + " has been deleted because of incomplete.\n"
             error_output += "################## Error occur ######################\n"
             print(error_output)
             with open(parameters.EXCEPTION_FILE, 'a', encoding='utf=8') as exception_file:
@@ -91,7 +92,7 @@ def convert_markup_files_to_xml(src_parent_path, target_parent_path):
         print('=============================================')
 
 
-def extract_content_from_markup_text(src_parent_path):
+def extract_content_from_markup_texts(src_parent_path):
     """
     extract content of element of 'content'.
     :param src_parent_path: some markup texts under here
@@ -102,8 +103,9 @@ def extract_content_from_markup_text(src_parent_path):
     xml_files_parent_path = src_parent_path + "_xml"
     convert_markup_files_to_xml(utf8_files_parent_path, xml_files_parent_path)
     train_texts_parent_path = src_parent_path + "_train"
-    xml_operation_sax.extract_content_from_xml(xml_files_parent_path, train_texts_parent_path)
-
+    # xml_operation_sax.extract_content_from_xmls(xml_files_parent_path, train_texts_parent_path)
+    xml_operation_dom.XMLsContentExtractor().process_srcpath_to_targetpath(
+        xml_files_parent_path, train_texts_parent_path, filename_suffix=".train")
 
 # if __name__ == '__main__':
 #     # judge encoding of file
