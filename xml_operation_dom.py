@@ -32,8 +32,10 @@ def extract_content_from_xml(src_xml_url, target_filename):
 
 
 class XMLsContentExtractor(tools.ProcessPath):
-    def do_after_process_file(self, src_xml_url, target_filename):
+    def do_process_file(self, src_xml_url, target_filename):
         extract_content_from_xml(src_xml_url, target_filename)
+
+    def do_after_process_file(self, src_xml_url, target_filename):
         print('content has been extracted from', src_xml_url)
         print('result has been saved in', target_filename)
         print('------------------------------------------')

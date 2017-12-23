@@ -12,6 +12,9 @@ class ProcessPath:
     def do_after_loop(self, src_file, target_file):
         pass
 
+    def do_process_file(self, src_filename, target_filename):
+        pass
+
     def do_after_process_file(self, src_filename, target_filename):
         print(src_filename, "has been processed.")
         print('result has been saved in', target_filename)
@@ -38,6 +41,8 @@ class ProcessPath:
                     self.do_in_loop(line, src_file, target_file)
                 # 用于在target_file末尾写一些东西
                 self.do_after_loop(src_file, target_file)
+            # 处理src文件，并将结果放入目标文件
+            self.do_process_file(src_filename, target_filename)
             # 处理完一个文件后，控制台打印一些信息
             self.do_after_process_file(src_filename, target_filename)
 
