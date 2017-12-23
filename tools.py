@@ -80,3 +80,16 @@ def get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent
             os.makedirs(target_parent_path)
         src_filename_list.append(src_filename)
         target_filename_list.append(target_filename)
+
+
+# 大量字符串拼接的时候避免使用'+'，使用''.join(list)比较好
+def get_specify_number_char_from_text(src_file, char_number_one_time_read):
+    count = 0
+    ret_list = list()
+    for line in src_file:
+        if count >= char_number_one_time_read:
+            break
+        else:
+            ret_list.append(line)
+            count += len(line)
+    return ''.join(ret_list)
