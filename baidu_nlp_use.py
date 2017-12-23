@@ -4,7 +4,7 @@ from aip import AipNlp
 import tools
 
 
-char_number_one_time_read = 20000
+char_number_one_time_read = 10000
 
 
 def get_client():
