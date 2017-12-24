@@ -7,11 +7,11 @@ match_dirty_data_pattern1 = re.compile(parameters.MATCH_DIRTY_DATA_PATTERN1_STR)
 match_dirty_data_pattern2 = re.compile(parameters.MATCH_DIRTY_DATA_PATTERN2_STR)
 
 
-def extract_content_from_xml(src_xml_url, target_filename):
+def extract_content_from_xml(src_xml_url, target_filename, src_encoding, target_encoding):
     dom_tree = minidom.parse(src_xml_url)
     doc_root = dom_tree.documentElement
     docs = doc_root.getElementsByTagName('doc')
-    with open(target_filename, 'w', encoding='utf-8') as target_file:
+    with open(target_filename, 'w', encoding=target_encoding) as target_file:
         for doc in docs:
             content_title_element = doc.getElementsByTagName('contenttitle')[0]
             content_element = doc.getElementsByTagName('content')[0]
@@ -32,8 +32,8 @@ def extract_content_from_xml(src_xml_url, target_filename):
 
 
 class XMLsContentExtractor(tools.ProcessPath):
-    def do_process_file(self, src_xml_url, target_filename):
-        extract_content_from_xml(src_xml_url, target_filename)
+    def do_process_file(self, src_xml_url, target_filename, src_encoding, target_encoding):
+        extract_content_from_xml(src_xml_url, target_filename, src_encoding, target_encoding)
 
     def do_after_process_file(self, src_xml_url, target_filename):
         print('content has been extracted from', src_xml_url)

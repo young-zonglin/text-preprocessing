@@ -21,44 +21,57 @@ def ls_each_file(parent_path):
     return child_filename_list
 
 
-def convert_files_encoding(src_parent_path, target_parent_path, src_encoding, target_encoding="utf-8"):
+def convert_files_encoding(src_parent_path, target_parent_path,
+                           src_encoding, target_encoding="utf-8",
+                           filename_suffix=''):
     """
     convert encoding of files under src_parent_path to target_encoding.
     :param src_parent_path: there are some files waited to be converted
     :param target_parent_path: result file will be saved here
     :param src_encoding: it should be equal to save encoding
     :param target_encoding: default utf-8
+    :param filename_suffix: filename suffix
     :return: None
     """
     src_filename_list = []
     target_filename_list = []
     tools.get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
                                                         src_filename_list, target_filename_list,
-                                                        filename_suffix=".utf-8")
+                                                        filename_suffix)
     length = len(src_filename_list)
     for i in range(length):
         src_filename = src_filename_list[i]
         target_filename = target_filename_list[i]
-        try:
-            with open(src_filename, "r", encoding=src_encoding) as source_file, \
-                    open(target_filename, "w", encoding=target_encoding) as target_file:
+        with open(src_filename, "r", encoding=src_encoding) as source_file, \
+                open(target_filename, "w", encoding=target_encoding) as target_file:
+            try:
                 for line in source_file:
-                    target_file.write(line)
-            print('convert encoding from', src_encoding, 'to', target_encoding)
-            print('result has been saved in', target_filename)
-            print('------------------------------------------')
-        except UnicodeDecodeError as error:
-            os.remove(target_filename)
-            error_output = "################## Error occur ######################\n"
-            error_output += error.__str__() + '\n'
-            error_output += "maybe there are some illegal char we cannot decode.\n"
-            error_output += "give up to convert encoding of " + src_filename + '\n'
-            error_output += target_filename + " has been deleted because of incomplete.\n"
-            error_output += "################## Error occur ######################\n"
-            print(error_output)
-            with open(parameters.EXCEPTION_FILE, 'a', encoding='utf=8') as exception_file:
-                exception_file.write(error_output)
-            continue
+                    try:
+                        target_file.write(line)
+                    except UnicodeEncodeError as error:
+                        error_output = "\n################## UnicodeEncodeError ######################\n"
+                        error_output += error.__str__() + '\n'
+                        error_output += "maybe there are some illegal char we cannot encode.\n"
+                        error_output += "give up: " + line
+                        error_output += "################## UnicodeEncodeError ######################\n"
+                        print(error_output)
+                        with open(parameters.EXCEPTION_FILE, 'a', encoding='utf=8') as exception_file:
+                            exception_file.write(error_output)
+            except UnicodeDecodeError as error:
+                os.remove(target_filename)
+                error_output = "################## UnicodeDecodeError ######################\n"
+                error_output += error.__str__() + '\n'
+                error_output += "maybe there are some illegal char we cannot decode.\n"
+                error_output += "give up to convert encoding of " + src_filename + '\n'
+                error_output += target_filename + " has been deleted because of incomplete.\n"
+                error_output += "################## UnicodeDecodeError ######################\n"
+                print(error_output)
+                with open(parameters.EXCEPTION_FILE, 'a', encoding='utf=8') as exception_file:
+                    exception_file.write(error_output)
+                continue
+        print('convert encoding from', src_encoding, 'to', target_encoding)
+        print('result has been saved in', target_filename)
+        print('------------------------------------------')
 
 
 def convert_markup_files_to_xml(src_parent_path, target_parent_path):
@@ -99,7 +112,8 @@ def extract_content_from_markup_texts(src_parent_path):
     :return: None
     """
     utf8_files_parent_path = src_parent_path + "_utf-8格式"
-    convert_files_encoding(src_parent_path, utf8_files_parent_path, src_encoding="gb18030")
+    convert_files_encoding(src_parent_path, utf8_files_parent_path,
+                           src_encoding="gb18030", filename_suffix='utf-8')
     xml_files_parent_path = src_parent_path + "_xml"
     convert_markup_files_to_xml(utf8_files_parent_path, xml_files_parent_path)
     train_texts_parent_path = src_parent_path + "_train"
@@ -109,7 +123,8 @@ def extract_content_from_markup_texts(src_parent_path):
 
 # if __name__ == '__main__':
 #     # judge encoding of file
-#     with open("E:\自然语言处理数据集\搜狐新闻数据(SogouCS)\\news.sohunews.010802.txt", "rb") as f:
+#     with open("E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_gbk格式"
+#               "\\news.sohunews.010805.txt.utf-8.xml.train.seq.clean.gbk", "rb") as f:
 #         data = f.read(BLOCK_SIZE)
 #         print(chardet.detect(data))
 #

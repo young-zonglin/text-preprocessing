@@ -12,7 +12,8 @@ class ProcessPath:
     def do_after_loop(self, src_file, target_file):
         pass
 
-    def do_process_file(self, src_filename, target_filename):
+    def do_process_file(self, src_filename, target_filename,
+                        src_encoding, target_encoding):
         pass
 
     def do_after_process_file(self, src_filename, target_filename):
@@ -22,7 +23,8 @@ class ProcessPath:
 
     # template method pattern
     def process_srcpath_to_targetpath(self, src_parent_path, target_parent_path,
-                                      filename_suffix=""):
+                                      filename_suffix="",
+                                      src_encoding='utf-8', target_encoding='utf-8'):
         src_filename_list = []
         target_filename_list = []
         get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
@@ -32,8 +34,8 @@ class ProcessPath:
         for i in range(length):
             src_filename = src_filename_list[i]
             target_filename = target_filename_list[i]
-            with open(src_filename, 'r', encoding="utf-8") as src_file, \
-                    open(target_filename, 'w', encoding="utf-8") as target_file:
+            with open(src_filename, 'r', encoding=src_encoding) as src_file, \
+                    open(target_filename, 'w', encoding=target_encoding) as target_file:
                 # 用于在target_file开头写一些东西
                 self.do_before_loop(src_file, target_file)
                 for line in src_file:
@@ -42,7 +44,7 @@ class ProcessPath:
                 # 用于在target_file末尾写一些东西
                 self.do_after_loop(src_file, target_file)
             # 处理src文件，并将结果放入目标文件
-            self.do_process_file(src_filename, target_filename)
+            self.do_process_file(src_filename, target_filename, src_encoding, target_encoding)
             # 处理完一个文件后，控制台打印一些信息
             self.do_after_process_file(src_filename, target_filename)
 

@@ -41,10 +41,10 @@ def segment_baidu(client, text):
     return seg_result, baidu_result
 
 
-def segment_text(client, src_filename, target_filename):
-    with open(src_filename, 'r', encoding='utf-8') as src_file:
-        with open(target_filename, 'w', encoding='utf-8') as target_file, \
-                open(parameters.BAIDU_LEXER_RESULT_FILE, 'a', encoding='utf-8') as baidu_lexer_res_file:
+def segment_text(client, src_filename, target_filename, src_encoding, target_encoding):
+    with open(src_filename, 'r', encoding=src_encoding) as src_file:
+        with open(target_filename, 'w', encoding=target_encoding) as target_file, \
+                open(parameters.BAIDU_LEXER_RESULT_FILE, 'a', encoding=target_encoding) as baidu_lexer_res_file:
             text = tools.get_specify_number_char_from_text(src_file, char_number_one_time_read)
             while text != '':
                 seg_baidu_tuple = segment_baidu(client, text)
@@ -60,8 +60,9 @@ class TextsSegmentation(tools.ProcessPath):
     def __init__(self):
         self.baidu_nlp_client = get_client()
 
-    def do_process_file(self, src_filename, target_filename):
-        segment_text(self.baidu_nlp_client, src_filename, target_filename)
+    def do_process_file(self, src_filename, target_filename, src_encoding, target_encoding):
+        segment_text(self.baidu_nlp_client, src_filename, target_filename,
+                     src_encoding, target_encoding)
 
 
 if __name__ == "__main__":
@@ -72,4 +73,5 @@ if __name__ == "__main__":
         print(word, end=" ")
     src_filename = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_clean\\news.sohunews.010801.txt.utf-8.xml.train.seq.clean'
     target_filename = 'E:\\333.txt'
-    segment_text(client, src_filename, target_filename)
+    segment_text(client, src_filename, target_filename,
+                 src_encoding='utf-8', target_encoding='utf-8')
