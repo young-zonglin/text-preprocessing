@@ -13,3 +13,5 @@ Maybe you should uncomment the code in the text_preprocess_main.py.
 （5）去除数字内的逗号
 （6）按照停顿符和空格切句
 （7）继续清洗文本（不要“福彩”类的文本，去掉不应该出现的空格，去掉不包含中文的行）
+（8）将编码格式转为gbk
+（9）使用百度词法分析对文本分词
