@@ -57,7 +57,6 @@ def extract_content_from_xmls(src_xml_parent_path, target_parent_path):
             print(error_output)
             with open(parameters.EXCEPTION_FILE, 'a', encoding='utf=8') as exception_file:
                 exception_file.write(error_output)
-            continue
 
 if __name__ == '__main__':
     xml_url = "E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_xml\\news.sohunews.010801.txt.utf-8.xml"
