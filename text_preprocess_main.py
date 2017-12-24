@@ -17,12 +17,12 @@ from baidu_nlp_use import TextsSegmentation
 #     target_path = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_clean'
 #     DataCleaner().process_srcpath_to_targetpath(src_path, target_path, '.clean')
 
-if __name__ == '__main__':
-    src_path = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_clean'
-    target_path = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_gbk格式'
-    extract_from_markup_texts.convert_files_encoding(src_path, target_path,
-                                                     src_encoding='utf-8', target_encoding='gbk',
-                                                     filename_suffix='.gbk')
+# if __name__ == '__main__':
+#     src_path = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_clean'
+#     target_path = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_gbk格式'
+#     extract_from_markup_texts.convert_files_encoding(src_path, target_path,
+#                                                      src_encoding='utf-8', target_encoding='gbk',
+#                                                      filename_suffix='.gbk')
 
 if __name__ == '__main__':
     src_path = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_gbk格式'

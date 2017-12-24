@@ -37,7 +37,7 @@ def segment_baidu(client, text):
             item = items[i]
             seg_result.append(item.get('item'))
     else:
-        pass
+        print(baidu_result+'\n')
     return seg_result, baidu_result
 
 
