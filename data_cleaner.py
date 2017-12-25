@@ -9,8 +9,9 @@ def remove_comma_from_number(seq):
     while True:
         matched_obj = pattern.search(seq)
         if matched_obj:
+            matched_str = matched_obj.group()
             matched_comma_str = matched_obj.group(1)
-            seq = seq.replace(matched_comma_str, '')
+            seq = seq.replace(matched_str, matched_str.replace(matched_comma_str, ''))
         else:
             break
     return seq
