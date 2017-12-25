@@ -35,17 +35,24 @@ def segment_baidu(client, text):
         for i in range(length):
             # item: dict
             item = items[i]
-            seg_result.append(item.get('item'))
+            word = item['item']
+            pos = item.get('pos')
+            if pos and word != '\n':
+                word += '/'+pos
+            ne = item['ne']
+            if ne:
+                word += '/'+ne
+            seg_result.append(word)
     else:
         print('\n'+baidu_result.__str__())
         print('please check error file for more information.\n')
-        tmp = list()
-        tmp.append('\n=====================Baidu Segment Error=======================\n')
-        tmp.append('\n'+baidu_result.__str__()+'\n\n')
-        tmp.append(text)
-        tmp.append('=======================Baidu Segment Error=======================\n')
+        word = list()
+        word.append('\n=====================Baidu Segment Error=======================\n')
+        word.append('\n'+baidu_result.__str__()+'\n\n')
+        word.append(text)
+        word.append('=======================Baidu Segment Error=======================\n')
         with open(parameters.BAIDU_SEGMENT_ERROR_FILE, 'a', encoding='utf-8') as error_file:
-            error_file.write(''.join(tmp))
+            error_file.write(''.join(word))
     return seg_result, baidu_result
 
 
@@ -55,7 +62,6 @@ def segment_text(client, src_filename, target_filename, src_encoding, target_enc
                 open(parameters.BAIDU_LEXER_RESULT_FILE, 'a', encoding=target_encoding) as baidu_lexer_res_file:
             text = tools.get_specify_number_char_from_text(src_file, char_number_one_time_read)
             while text != '':
-                # TODO 分好词后顺便加上词性和命名实体
                 # TODO Python JSON操作，之前只抽取存储了分词结果，完整结果以JSON的形式保存
                 # TODO 多进程或者多线程，并行分词
                 seg_baidu_tuple = segment_baidu(client, text)
