@@ -37,11 +37,12 @@ def segment_baidu(client, text):
             item = items[i]
             seg_result.append(item.get('item'))
     else:
-        print('\n'+baidu_result.__str__()+'\n')
+        print('\n'+baidu_result.__str__())
+        print('please check error file for more information.\n')
         tmp = list()
         tmp.append('\n=====================Baidu Segment Error=======================\n')
-        tmp.append(baidu_result.__str__()+'\n')
-        tmp.append(text+'\n')
+        tmp.append('\n'+baidu_result.__str__()+'\n\n')
+        tmp.append(text)
         tmp.append('=======================Baidu Segment Error=======================\n')
         with open(parameters.BAIDU_SEGMENT_ERROR_FILE, 'a', encoding='utf-8') as error_file:
             error_file.write(''.join(tmp))
