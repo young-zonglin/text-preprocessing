@@ -37,7 +37,14 @@ def segment_baidu(client, text):
             item = items[i]
             seg_result.append(item.get('item'))
     else:
-        print('\n'+baidu_result+'\n')
+        print('\n'+baidu_result.__str__()+'\n')
+        tmp = list()
+        tmp.append('\n=====================Baidu Segment Error=======================\n')
+        tmp.append(baidu_result.__str__()+'\n')
+        tmp.append(text+'\n')
+        tmp.append('=======================Baidu Segment Error=======================\n')
+        with open(parameters.BAIDU_SEGMENT_ERROR_FILE, 'a', encoding='utf-8') as error_file:
+            error_file.write(''.join(tmp))
     return seg_result, baidu_result
 
 
@@ -47,7 +54,6 @@ def segment_text(client, src_filename, target_filename, src_encoding, target_enc
                 open(parameters.BAIDU_LEXER_RESULT_FILE, 'a', encoding=target_encoding) as baidu_lexer_res_file:
             text = tools.get_specify_number_char_from_text(src_file, char_number_one_time_read)
             while text != '':
-                # TODO 出错的文本也要打印记录，例如‘内部错误’和‘无效的参数’
                 # TODO 分好词后顺便加上词性和命名实体
                 # TODO Python JSON操作，之前只抽取存储了分词结果，完整结果以JSON的形式保存
                 # TODO 多进程或者多线程，并行分词
