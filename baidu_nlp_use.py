@@ -37,7 +37,7 @@ def segment_baidu(client, text):
             item = items[i]
             seg_result.append(item.get('item'))
     else:
-        print(baidu_result+'\n')
+        print('\n'+baidu_result+'\n')
     return seg_result, baidu_result
 
 
@@ -47,6 +47,10 @@ def segment_text(client, src_filename, target_filename, src_encoding, target_enc
                 open(parameters.BAIDU_LEXER_RESULT_FILE, 'a', encoding=target_encoding) as baidu_lexer_res_file:
             text = tools.get_specify_number_char_from_text(src_file, char_number_one_time_read)
             while text != '':
+                # TODO 出错的文本也要打印记录，例如‘内部错误’和‘无效的参数’
+                # TODO 分好词后顺便加上词性和命名实体
+                # TODO Python JSON操作，之前只抽取存储了分词结果，完整结果以JSON的形式保存
+                # TODO 多进程或者多线程，并行分词
                 seg_baidu_tuple = segment_baidu(client, text)
                 seg_result = seg_baidu_tuple[0]
                 seg_text_str = ' '.join(seg_result)
@@ -58,20 +62,36 @@ def segment_text(client, src_filename, target_filename, src_encoding, target_enc
 
 class TextsSegmentation(tools.ProcessPath):
     def __init__(self):
-        self.baidu_nlp_client = get_client()
+        self.__baidu_nlp_client = get_client()
+        self.__has_current_text_segmented = False
 
     def do_process_file(self, src_filename, target_filename, src_encoding, target_encoding):
-        segment_text(self.baidu_nlp_client, src_filename, target_filename,
-                     src_encoding, target_encoding)
+        if target_filename not in tools.get_baidu_segmented_texts():
+            self.__has_current_text_segmented = False
+            segment_text(self.__baidu_nlp_client, src_filename, target_filename,
+                         src_encoding, target_encoding)
+            tools.update_baidu_segmented_texts(target_filename)
+        else:
+            self.__has_current_text_segmented = True
+
+    def do_after_process_file(self, src_filename, target_filename):
+        if self.__has_current_text_segmented:
+            print(src_filename, "has already been processed.")
+            print('nothing to do.')
+            print('=============================================')
+        else:
+            print(src_filename, "has been processed.")
+            print('result has been saved in', target_filename)
+            print('=============================================')
 
 
-if __name__ == "__main__":
-    text = "同意在新起点上退动中美关析取得更大法展"
-    client = get_client()
-    seg_result = segment_baidu(client, text)
-    for word in seg_result[0]:
-        print(word, end=" ")
-    src_filename = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_clean\\news.sohunews.010801.txt.utf-8.xml.train.seq.clean'
-    target_filename = 'E:\\333.txt'
-    segment_text(client, src_filename, target_filename,
-                 src_encoding='utf-8', target_encoding='utf-8')
+# if __name__ == "__main__":
+#     text = "同意在新起点上退动中美关析取得更大法展"
+#     client = get_client()
+#     seg_result = segment_baidu(client, text)
+#     for word in seg_result[0]:
+#         print(word, end=" ")
+#     src_filename = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_clean\\news.sohunews.010801.txt.utf-8.xml.train.seq.clean'
+#     target_filename = 'E:\\333.txt'
+#     segment_text(client, src_filename, target_filename,
+#                  src_encoding='utf-8', target_encoding='utf-8')

@@ -1,5 +1,9 @@
 import os
 import parameters
+import re
+
+
+newline_match_pattern = re.compile('\n')
 
 
 class ProcessPath:
@@ -14,7 +18,15 @@ class ProcessPath:
 
     def do_process_file(self, src_filename, target_filename,
                         src_encoding, target_encoding):
-        pass
+        with open(src_filename, 'r', encoding=src_encoding) as src_file, \
+                open(target_filename, 'w', encoding=target_encoding) as target_file:
+            # 用于在target_file开头写一些东西
+            self.do_before_loop(src_file, target_file)
+            for line in src_file:
+                # 处理src_file的每一行，将结果存入target_file
+                self.do_in_loop(line, src_file, target_file)
+            # 用于在target_file末尾写一些东西
+            self.do_after_loop(src_file, target_file)
 
     def do_after_process_file(self, src_filename, target_filename):
         print(src_filename, "has been processed.")
@@ -34,15 +46,6 @@ class ProcessPath:
         for i in range(length):
             src_filename = src_filename_list[i]
             target_filename = target_filename_list[i]
-            with open(src_filename, 'r', encoding=src_encoding) as src_file, \
-                    open(target_filename, 'w', encoding=target_encoding) as target_file:
-                # 用于在target_file开头写一些东西
-                self.do_before_loop(src_file, target_file)
-                for line in src_file:
-                    # 处理src_file的每一行，将结果存入target_file
-                    self.do_in_loop(line, src_file, target_file)
-                # 用于在target_file末尾写一些东西
-                self.do_after_loop(src_file, target_file)
             # 处理src文件，并将结果放入目标文件
             self.do_process_file(src_filename, target_filename, src_encoding, target_encoding)
             # 处理完一个文件后，控制台打印一些信息
@@ -95,3 +98,32 @@ def get_specify_number_char_from_text(src_file, char_number_one_time_read):
             ret_list.append(line)
             count += len(line)
     return ''.join(ret_list)
+
+
+def get_baidu_segmented_texts():
+    processed_texts = list()
+    with open(parameters.BAIDU_SEGMENTED_TEXTS_RECORD_FILE, 'r', encoding='utf-8') as record_file:
+        for line in record_file:
+            processed_texts.append(newline_match_pattern.sub('', line))
+    return set(processed_texts)
+
+
+def update_baidu_segmented_texts(processed_filename):
+    with open(parameters.BAIDU_SEGMENTED_TEXTS_RECORD_FILE, 'a', encoding='utf-8') as record_file:
+        record_file.write(processed_filename+'\n')
+
+
+# if __name__ == '__main__':
+#     print(get_baidu_segmented_texts())
+#     filename = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_segment\\news.sohunews.010801.txt.utf-8.xml.train.seq.clean.gbk.segment'
+#     if filename in get_baidu_segmented_texts():
+#         print('I am here')
+
+# if __name__ == '__main__':
+#     segmented_path = 'E:\自然语言处理数据集\搜狐新闻数据(SogouCS)_segment'
+#     count = 0
+#     with open(parameters.BAIDU_SEGMENTED_TEXTS_RECORD_FILE, 'a', encoding='utf-8') as record_file:
+#         for filename in os.listdir(segmented_path):
+#             count += 1
+#             record_file.write(os.path.join(segmented_path, filename)+'\n')
+#     print(count)
