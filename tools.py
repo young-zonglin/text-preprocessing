@@ -6,6 +6,7 @@ import re
 newline_match_pattern = re.compile('\n')
 
 
+# TODO 支持断点续处理
 class ProcessPath:
     def do_before_loop(self, src_file, target_file):
         pass
