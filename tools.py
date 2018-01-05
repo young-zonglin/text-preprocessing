@@ -51,6 +51,9 @@ class ProcessPath:
             self.do_process_file(src_filename, target_filename, src_encoding, target_encoding)
             # 处理完一个文件后，控制台打印一些信息
             self.do_after_process_file(src_filename, target_filename)
+        print('\n################# Process Finish #####################')
+        print(length, 'files have been processed')
+        print('################# Process Finish #####################')
 
 
 def get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent_path,
