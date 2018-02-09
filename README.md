@@ -1,7 +1,7 @@
-# text-preprocess
+# Text preprocess
 Preprocess text, transfer them into format used by language model implemented by Keras with LSTM in Python.
 
-# get started
+# Get started
 The main entry is in text_preprocess_main.py.
 Maybe you should uncomment the code in the text_preprocess_main.py.
 
