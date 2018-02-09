@@ -7,11 +7,12 @@ Maybe you should uncomment the code in the text_preprocess_main.py.
 
 # 步骤
 1. 转换编码
-2. 转换标记文本为xml
+2. 转换标记文本为XML文档
 3. 获取content和contenttitle元素内的文本
 4. 将全角字符转为半角
 5. 去除数字内的逗号
 6. 按照停顿符和空格切句
 7. 继续清洗文本（不要“福彩”类的文本，去掉不应该出现的空格，去掉不包含中文的行）
-8. 将编码格式转为gbk
+8. 将编码格式转为GBK
 9. 使用百度词法分析对文本分词
+10. 替换命名实体和数字为相应标识符
