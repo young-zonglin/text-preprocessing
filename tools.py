@@ -95,8 +95,17 @@ def get_filenamelist_under_srcpath_and_targetpath(src_parent_path, target_parent
 def get_specify_number_char_from_text(src_file, char_number_one_time_read):
     count = 0
     ret_list = list()
+    # line = src_file.readLine()
+    # while True:
+    #     if line == '' or count >= char_number_one_time_read:
+    #         ret_list.append(line)
+    #         break
+    #     ret_list.append(line)
+    #     count += len(line)
+    #     line = src_file.readLine()
     for line in src_file:
         if count >= char_number_one_time_read:
+            ret_list.append(line)
             break
         else:
             ret_list.append(line)
