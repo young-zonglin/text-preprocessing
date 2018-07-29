@@ -46,13 +46,13 @@ def segment_baidu(client, text):
     else:
         print('\n'+baidu_result.__str__())
         print('please check error file for more information.\n')
-        word = list()
-        word.append('\n=====================Baidu Segment Error=======================\n')
-        word.append('\n'+baidu_result.__str__()+'\n\n')
-        word.append(text)
-        word.append('=======================Baidu Segment Error=======================\n')
+        error_info = list()
+        error_info.append('\n=====================Baidu Segment Error=======================\n')
+        error_info.append('\n'+baidu_result.__str__()+'\n\n')
+        error_info.append(text)
+        error_info.append('=======================Baidu Segment Error=======================\n')
         with open(parameters.BAIDU_SEGMENT_ERROR_FILE, 'a', encoding='utf-8') as error_file:
-            error_file.write(''.join(word))
+            error_file.write(''.join(error_info))
     return seg_result, baidu_result
 
 
