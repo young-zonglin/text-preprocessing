@@ -1,18 +1,18 @@
-# Text preprocess
-Preprocess text, transfer them into format used by language model implemented by Keras with LSTM in Python.
+## Text preprocess
+Preprocess text, transfer them into format used by language model.
 
-# Get started
-The main entry is in text_preprocess_main.py.
-Maybe you should uncomment the code in the text_preprocess_main.py.
+## Get started
+- The main entry is at `text_preprocess_main.py`.
+- Maybe you should uncomment the code in the `text_preprocess_main.py`.
 
-# 步骤
-1. 转换编码
-2. 转换标记文本为XML文档
-3. 获取content和contenttitle元素内的文本
-4. 将全角字符转为半角
-5. 去除数字内的逗号
-6. 按照停顿符和空格切句
-7. 继续清洗文本（不要“福彩”类的文本，去掉不应该出现的空格，去掉不包含中文的行）
-8. 将编码格式转为GBK
-9. 使用百度词法分析对文本分词
-10. 替换命名实体和数字为相应标识符
+## 步骤
+1. Conversion coding.
+2. Convert marked text to XML documents.
+3. Get the text inside the elements of 'content' and 'contenttitle'.
+4. Turn full-width characters into half-width.
+5. Remove the comma within the number.
+6. Cut words according to pause symbos and spaces.
+7. Continue to clean the text (remove text like "福彩", remove spaces that should not appear, remove lines that do not contain Chinese).
+8. Convert the encoding format to GBK.
+9. Using Baidu lexical analysis to segment text.
+10. Replace named entities and numbers with corresponding identifiers.
