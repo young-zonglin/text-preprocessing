@@ -5,8 +5,8 @@ Preprocess text, transfer them into format used by language model.
 - The main entry is at `text_preprocess_main.py`.
 - Maybe you should uncomment the code in the `text_preprocess_main.py`.
 
-## 步骤
-1. Conversion coding.
+## Text preprocessing process
+1. Convert coding.
 2. Convert marked text to XML documents.
 3. Get the text inside the elements of 'content' and 'contenttitle'.
 4. Turn full-width characters into half-width.
